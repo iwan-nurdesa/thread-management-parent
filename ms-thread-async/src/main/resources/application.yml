@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: ms-thread-async
+
+  profiles:
+    active: local
+
+server:
+  port: 8081
+
+async:
+  log:
+    core-pool-size: 4
+    max-pool-size: 8
+    queue-capacity: 2000
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
