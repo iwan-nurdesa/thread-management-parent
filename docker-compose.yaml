@@ -1,23 +1,16 @@
 services:
-#  ms-thread-async:
-#    build:
-#      context: ./ms-thread-async
-#    image: iwannurdesa/ms-thread-async:latest
-#    container_name: ms-thread-async
-#    ports:
-#      - "8081:8080"
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=dev
-#      - SERVER_PORT=8080
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 2g        # ✅ batasi max RAM 2GB
-#          cpus: "1.0"       # ✅ batasi CPU 1 core
-#        reservations:
-#          memory: 1g
-#    networks:
-#      - monitor
+  ms-thread-async:
+    build:
+      context: ./ms-thread-async
+    image: iwannurdesa/ms-thread-async:latest
+    container_name: ms-thread-async
+    ports:
+      - "8081:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SERVER_PORT=8080
+    networks:
+      - monitor
 
   ms-thread-leak:
     build:
