@@ -21,7 +21,15 @@ public class AppLogService {
     public void save(AppLog appLog) {
         ExecutorService service = Executors.newFixedThreadPool(4);
         service.submit(() -> {
-             appLogRepository.save(appLog);
+            String threadName = Thread.currentThread().getName();
+            log.info("[{}] Mulai menyimpan AppLog...", threadName);
+
+            try {
+                appLogRepository.save(appLog);
+                log.info("[{}] Berhasil menyimpan AppLog", threadName);
+            } catch (Exception e) {
+                log.error("[{}] Gagal menyimpan AppLog", threadName, e);
+            }
         });
     }
 }

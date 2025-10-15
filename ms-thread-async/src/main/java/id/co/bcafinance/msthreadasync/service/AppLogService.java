@@ -17,7 +17,14 @@ public class AppLogService {
 
     @Async("logExecutor")
     public void save(AppLog appLog) {
-         appLogRepository.save(appLog);
+        log.info("Mulai menyimpan AppLog...");
+
+        try {
+            appLogRepository.save(appLog);
+            log.info("Berhasil menyimpan AppLog");
+        } catch (Exception e) {
+            log.error("Gagal menyimpan AppLog", e);
+        }
     }
 }
 
