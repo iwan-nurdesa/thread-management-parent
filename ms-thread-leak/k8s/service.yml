@@ -1,0 +1,16 @@
+# ==========================================
+# Service ms-thread-leak
+# ==========================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-thread-leak
+  namespace: poc-thread
+spec:
+  type: NodePort
+  selector:
+    app: ms-thread-leak
+  ports:
+    - port: 8082
+      targetPort: 8082
+      nodePort: 31082

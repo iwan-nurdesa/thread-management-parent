@@ -1,0 +1,19 @@
+# ==========================================
+# Grafana ConfigMap (datasource ke Prometheus)
+# ==========================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  namespace: poc-thread
+  labels:
+    app: grafana
+data:
+  prometheus-datasource.yml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus.poc-thread.svc.cluster.local:9090
+        isDefault: true

@@ -1,0 +1,49 @@
+# ==========================================
+# Deployment ms-thread-async
+# ==========================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-thread-async
+  namespace: poc-thread
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-thread-async
+  template:
+    metadata:
+      labels:
+        app: ms-thread-async
+    spec:
+      containers:
+        - name: ms-thread-async
+          image: iwannurdesa/ms-thread-async:latest
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: ms-thread-async-config
+          resources:
+            # Disesuaikan agar efisien tapi aman di server 8–16GB RAM
+            requests:
+              cpu: "250m"      # ~25% 1 core
+              memory: "512Mi"  # cukup untuk Java app ringan
+            limits:
+              cpu: "1"         # max 1 core
+              memory: "1Gi"    # mencegah OOM tanpa berlebihan
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8081
+            initialDelaySeconds: 25   # tunggu Spring Boot lebih lama sebelum cek
+            periodSeconds: 10
+            failureThreshold: 3       # jumlah kegagalan sebelum dianggap tidak ready
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8081
+            initialDelaySeconds: 45   # beri waktu lebih untuk container startup
+            periodSeconds: 20
+            failureThreshold: 5       # biar tidak restart container terlalu cepat

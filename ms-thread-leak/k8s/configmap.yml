@@ -1,0 +1,16 @@
+# ==========================================
+# ConfigMap untuk ms-thread-leak
+# ==========================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ms-thread-leak-config
+  namespace: poc-thread
+data:
+  SPRING_PROFILES_ACTIVE: dev
+  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/thread_async_db
+  SPRING_DATASOURCE_USERNAME: postgres
+  SPRING_DATASOURCE_PASSWORD: postgres
+  SERVER_PORT: "8082"
+  MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: "true"
+  MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus"

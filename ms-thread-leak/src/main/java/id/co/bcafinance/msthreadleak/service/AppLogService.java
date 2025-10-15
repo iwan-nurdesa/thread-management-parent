@@ -4,27 +4,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import id.co.bcafinance.msthreadleak.model.AppLog;
 import id.co.bcafinance.msthreadleak.repository.AppLogRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AppLogService {
 
     private final AppLogRepository appLogRepository;
-    private final ObjectMapper objectMapper;
 
     public void save(AppLog appLog) {
         ExecutorService service = Executors.newFixedThreadPool(4);
-		service.submit(new Runnable() {
-			public void run() {
-                appLogRepository.save(appLog);
-			}
-		});
-
+        service.submit(() -> {
+             appLogRepository.save(appLog);
+        });
     }
 }
-

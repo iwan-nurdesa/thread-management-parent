@@ -1,0 +1,11 @@
+# =========================
+# PostgreSQL ConfigMap
+# =========================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: poc-thread
+data:
+  POSTGRES_DB: thread_async_db
+  POSTGRES_USER: postgres

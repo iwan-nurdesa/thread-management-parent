@@ -1,0 +1,83 @@
+services:
+#  ms-thread-async:
+#    build:
+#      context: ./ms-thread-async
+#    image: iwannurdesa/ms-thread-async:latest
+#    container_name: ms-thread-async
+#    ports:
+#      - "8081:8080"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=dev
+#      - SERVER_PORT=8080
+#    deploy:
+#      resources:
+#        limits:
+#          memory: 2g        # ✅ batasi max RAM 2GB
+#          cpus: "1.0"       # ✅ batasi CPU 1 core
+#        reservations:
+#          memory: 1g
+#    networks:
+#      - monitor
+
+  ms-thread-leak:
+    build:
+      context: ./ms-thread-leak
+    image: iwannurdesa/ms-thread-leak:latest
+    container_name: ms-thread-leak
+    ports:
+      - "8082:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SERVER_PORT=8080
+    networks:
+      - monitor
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=demo_thread
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+    ports:
+      - "5432:5432"
+    networks:
+      - monitor
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infra/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+#      - ms-thread-async
+      - ms-thread-leak
+    networks:
+      - monitor
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    links:
+      - prometheus:prometheus
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - monitor
+
+networks:
+  monitor:
+    driver: bridge

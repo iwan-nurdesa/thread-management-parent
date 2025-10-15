@@ -1,0 +1,30 @@
+# ==========================================
+# Prometheus ConfigMap
+# ==========================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: poc-thread
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 5s
+
+    scrape_configs:
+      # Prometheus self
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
+
+      # ms-thread-async
+      - job_name: 'ms-thread-async'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['ms-thread-async.poc-thread.svc.cluster.local:8081']
+
+      # ms-thread-leak
+      - job_name: 'ms-thread-leak'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['ms-thread-leak.poc-thread.svc.cluster.local:8082']

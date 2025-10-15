@@ -5,11 +5,9 @@ spring:
   profiles:
     active: local
 
-server:
-  port: 8080
-
 logging:
   level:
     root: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    id.co.bcafinance.msthreadleak: DEBUG

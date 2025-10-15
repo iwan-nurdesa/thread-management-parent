@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.function.Consumer;
 
 @Entity
-@Table(name = "app_log")
+@Table(name = "app_log_leak")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter

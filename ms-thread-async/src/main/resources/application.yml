@@ -10,9 +10,9 @@ server:
 
 async:
   log:
-    core-pool-size: 4
-    max-pool-size: 8
-    queue-capacity: 2000
+    core-pool-size: 10
+    max-pool-size: 20
+    queue-capacity: 5000
 
 logging:
   level:

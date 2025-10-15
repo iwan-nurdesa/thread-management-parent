@@ -1,0 +1,16 @@
+# ==========================================
+# Service ms-thread-async
+# ==========================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-thread-async
+  namespace: poc-thread
+spec:
+  type: NodePort
+  selector:
+    app: ms-thread-async
+  ports:
+    - port: 8081
+      targetPort: 8081
+      nodePort: 31081

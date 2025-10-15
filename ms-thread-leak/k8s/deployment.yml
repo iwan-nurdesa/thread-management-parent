@@ -1,0 +1,47 @@
+# ==========================================
+# Deployment ms-thread-leak
+# ==========================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-thread-leak
+  namespace: poc-thread
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-thread-leak
+  template:
+    metadata:
+      labels:
+        app: ms-thread-leak
+    spec:
+      containers:
+        - name: ms-thread-leak
+          image: iwannurdesa/ms-thread-leak:latest
+          ports:
+            - containerPort: 8082
+          envFrom:
+            - configMapRef:
+                name: ms-thread-leak-config
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8082
+            initialDelaySeconds: 25   # tunggu Spring Boot lebih lama sebelum cek
+            periodSeconds: 10
+            failureThreshold: 3       # jumlah kegagalan sebelum dianggap tidak ready
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8082
+            initialDelaySeconds: 45   # beri waktu lebih untuk container startup
+            periodSeconds: 20
+            failureThreshold: 5       # biar tidak restart container terlalu cepat
