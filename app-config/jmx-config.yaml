@@ -1,8 +1,0 @@
----
-rules:
-  - pattern: 'java.lang<type=Threading><>(ThreadCount|DaemonThreadCount)'
-    name: jvm_threads_$1
-    type: GAUGE
-  - pattern: 'java.lang<type=Memory><HeapMemoryUsage>(.*):'
-    name: jvm_memory_heap_$1_bytes
-    type: GAUGE
